@@ -12,6 +12,10 @@ using namespace cv;
 #define MEDIAN_BLUR 1
 #define BILATERAL_BLUR 2
 
+#define DILATING	3
+#define ERODING		4
+
+
 void imageSmoothing(Mat srcImg, Mat &outputImg, Size kernelSize, int type)
 {
 	switch (type)
@@ -29,35 +33,52 @@ void imageSmoothing(Mat srcImg, Mat &outputImg, Size kernelSize, int type)
 	}
 }
 
+void mathematicalMorphology(Mat	srcImg, Mat &outputImg, int operationType, Mat structuringElement)
+{
+	switch (operationType)
+	{
+	case 3:
+		dilate(srcImg,outputImg,structuringElement);
+		break;
+	case 4:
+		erode(srcImg, outputImg, structuringElement);
+		break;
+
+	}
+
+}
+
 // morphology : dilatation : /!\
 					//	    /___\
  
 int main()
 {
 	
-	Mat srcImg = imread("andromeda.jpg");
-	Mat outputImg0, outputImg1, outputImg2 ;
+	Mat srcImg = imread("images/apple.png");
+	Mat outputImg0,outputImg1;
+	//Mat outputImg0, outputImg1, outputImg2 ;
 	Mat kernel;
-	int kernelSize;
+	int kernelSize = 7;
+
+	kernel = getStructuringElement(MORPH_RECT,Size(kernelSize,kernelSize));
+
+	mathematicalMorphology(srcImg, outputImg0, DILATING, kernel);
+	mathematicalMorphology(srcImg, outputImg1, ERODING , kernel);
+
+
+
 
 	if (srcImg.data == NULL)
 	{
 		cout << "error when loading file"; 
 		return -1;
 	}
-	namedWindow("originalImage", WINDOW_NORMAL);
-	namedWindow("gaussianFilteredImage", WINDOW_NORMAL);
-	namedWindow("medianFilteredImage", WINDOW_NORMAL);
-	namedWindow("bilateralFilteredImage", WINDOW_NORMAL);
 
-	imageSmoothing(srcImg, outputImg0, Size(5, 5), GAUSSIAN_BLUR);
-	imageSmoothing(srcImg, outputImg1, Size(5, 5),MEDIAN_BLUR);
-	imageSmoothing(srcImg, outputImg2, Size(5, 5), BILATERAL_BLUR);
 
 	imshow("originalImage", srcImg);
-	imshow("gaussianFilteredImage", outputImg0);
-	imshow("medianFilteredImage", outputImg1);
-	imshow("bilateralFilteredImage", outputImg2);
+	imshow("dilatedImage", outputImg0);
+	imshow("erodedImage", outputImg1);
+
 
 	waitKey(-1);
 	return 0;
@@ -74,3 +95,5 @@ int main()
 //   4. Utilisez la fenêtre Liste d'erreurs pour voir les erreurs.
 //   5.  Accédez à Projet > Ajouter un nouvel élément pour créer des fichiers de code, ou à Projet > Ajouter un élément existant pour ajouter des fichiers de code existants au projet.
 //   6. Pour rouvrir ce projet plus tard, accédez à Fichier > Ouvrir > Projet et sélectionnez le fichier .sln.
+
+

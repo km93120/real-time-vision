@@ -164,6 +164,26 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="andromeda.jpg" />
+    <Image Include="images\apple.png" />
+    <Image Include="images\bike.jpg" />
+    <Image Include="images\bird.jpg" />
+    <Image Include="images\box.png" />
+    <Image Include="images\box_in_scene.png" />
+    <Image Include="images\building.jpg" />
+    <Image Include="images\bus.jpg" />
+    <Image Include="images\bus2.jpg" />
+    <Image Include="images\bus_template.png" />
+    <Image Include="images\car.jpg" />
+    <Image Include="images\faces.JPG" />
+    <Image Include="images\horse.jpg" />
+    <Image Include="images\landscape.jpg" />
+    <Image Include="images\lena.jpg" />
+    <Image Include="images\lena.png" />
+    <Image Include="images\monalisa.jpg" />
+    <Image Include="images\parking.jpg" />
+    <Image Include="images\plane.jpg" />
+    <Image Include="images\porsche.jpg" />
+    <Image Include="images\tiger.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

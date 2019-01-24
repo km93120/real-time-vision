@@ -28,5 +28,65 @@
     <Image Include="andromeda.jpg">
       <Filter>Fichiers de ressources</Filter>
     </Image>
+    <Image Include="images\apple.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\bike.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\bird.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\box.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\box_in_scene.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\building.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\bus.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\bus_template.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\bus2.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\car.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\faces.JPG">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\horse.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\landscape.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\lena.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\lena.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\monalisa.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\parking.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\plane.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\porsche.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="images\tiger.jpg">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
 </Project>
