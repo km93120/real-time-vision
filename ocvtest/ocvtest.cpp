@@ -8,6 +8,27 @@
 using namespace std;
 using namespace cv;
 
+#define GAUSSIAN_BLUR 0
+#define MEDIAN_BLUR 1
+#define BILATERAL_BLUR 2
+
+void imageSmoothing(Mat srcImg, Mat &outputImg, Size kernelSize, int type)
+{
+	switch (type)
+	{
+	case 0:
+		GaussianBlur(srcImg, outputImg, kernelSize, 0.0);
+		break;
+	case 1:
+		medianBlur(srcImg, outputImg, kernelSize.height);
+		break;
+	case 2:
+		bilateralFilter(srcImg, outputImg, 15, 30, 7.5);
+		break;
+
+	}
+}
+
 // morphology : dilatation : /!\
 					//	    /___\
  
@@ -15,11 +36,9 @@ int main()
 {
 	
 	Mat srcImg = imread("andromeda.jpg");
-	Mat outputImg;
+	Mat outputImg0, outputImg1, outputImg2 ;
 	Mat kernel;
-
-	kernel = Mat::ones( Size(3, 3), 1);
-	filter2D(srcImg, outputImg, -1, kernel);
+	int kernelSize;
 
 	if (srcImg.data == NULL)
 	{
@@ -27,12 +46,23 @@ int main()
 		return -1;
 	}
 	namedWindow("originalImage", WINDOW_NORMAL);
-	namedWindow("filteredImage", WINDOW_NORMAL);
+	namedWindow("gaussianFilteredImage", WINDOW_NORMAL);
+	namedWindow("medianFilteredImage", WINDOW_NORMAL);
+	namedWindow("bilateralFilteredImage", WINDOW_NORMAL);
+
+	imageSmoothing(srcImg, outputImg0, Size(5, 5), GAUSSIAN_BLUR);
+	imageSmoothing(srcImg, outputImg1, Size(5, 5),MEDIAN_BLUR);
+	imageSmoothing(srcImg, outputImg2, Size(5, 5), BILATERAL_BLUR);
+
 	imshow("originalImage", srcImg);
-	imshow("filteredImage", outputImg);
+	imshow("gaussianFilteredImage", outputImg0);
+	imshow("medianFilteredImage", outputImg1);
+	imshow("bilateralFilteredImage", outputImg2);
+
 	waitKey(-1);
 	return 0;
 }
+
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
 // Déboguer le programme : F5 ou menu Déboguer > Démarrer le débogage
