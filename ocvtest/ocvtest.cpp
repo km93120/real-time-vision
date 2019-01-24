@@ -13,11 +13,23 @@ using namespace cv;
  
 int main()
 {
-	Mat img = imread("andromea.jpg");
-	if (img.data == NULL)
-		cout << "error when loading file"; return -1;
-	namedWindow("image", WINDOW_NORMAL);
-	imshow("image", img);
+	
+	Mat srcImg = imread("andromeda.jpg");
+	Mat outputImg;
+	Mat kernel;
+
+	kernel = Mat::ones( Size(3, 3), 1);
+	filter2D(srcImg, outputImg, -1, kernel);
+
+	if (srcImg.data == NULL)
+	{
+		cout << "error when loading file"; 
+		return -1;
+	}
+	namedWindow("originalImage", WINDOW_NORMAL);
+	namedWindow("filteredImage", WINDOW_NORMAL);
+	imshow("originalImage", srcImg);
+	imshow("filteredImage", outputImg);
 	waitKey(-1);
 	return 0;
 }
