@@ -48,25 +48,28 @@ void mathematicalMorphology(Mat	srcImg, Mat &outputImg, int operationType, Mat s
 
 }
 
+void imageThresholding(Mat srcImg, Mat &outputImg, int minThreshold, int maxThreshold)
+{
+	threshold(srcImg, outputImg, minThreshold, maxThreshold, 1);
+
+}
+
 // morphology : dilatation : /!\
 					//	    /___\
  
 int main()
 {
 	
-	Mat srcImg = imread("images/apple.png");
-	Mat outputImg0,outputImg1;
+	Mat srcImg = imread("images/tiger.jpg");
+	Mat gray; 
+	cvtColor(srcImg, srcImg, cv::COLOR_RGB2GRAY);
+	Mat outputImg,outputImg1;
 	//Mat outputImg0, outputImg1, outputImg2 ;
 	Mat kernel;
 	int kernelSize = 7;
 
-	kernel = getStructuringElement(MORPH_RECT,Size(kernelSize,kernelSize));
-
-	mathematicalMorphology(srcImg, outputImg0, DILATING, kernel);
-	mathematicalMorphology(srcImg, outputImg1, ERODING , kernel);
-
-
-
+	
+	imageThresholding(srcImg, outputImg, 100, 255);
 
 	if (srcImg.data == NULL)
 	{
@@ -74,11 +77,7 @@ int main()
 		return -1;
 	}
 
-
-	imshow("originalImage", srcImg);
-	imshow("dilatedImage", outputImg0);
-	imshow("erodedImage", outputImg1);
-
+	imshow("originalImage", outputImg);
 
 	waitKey(-1);
 	return 0;
