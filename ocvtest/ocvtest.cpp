@@ -15,6 +15,10 @@ using namespace cv;
 #define DILATING	3
 #define ERODING		4
 
+#define LAPLACIAN 5
+#define SCALING 6 
+#define CANNY 7 
+
 
 void imageSmoothing(Mat srcImg, Mat &outputImg, Size kernelSize, int type)
 {
@@ -43,7 +47,6 @@ void mathematicalMorphology(Mat	srcImg, Mat &outputImg, int operationType, Mat s
 	case 4:
 		erode(srcImg, outputImg, structuringElement);
 		break;
-
 	}
 
 }
@@ -54,30 +57,60 @@ void imageThresholding(Mat srcImg, Mat &outputImg, int minThreshold, int maxThre
 
 }
 
+void contoursDetection(Mat srcImg, Mat &outputImg,int operationType)
+{
+	switch (operationType)
+	{
+	case 5:
+		
+		break;
+	case 6:
+		
+		break;
+	case 7:
+
+		break;
+
+	}
+}
+
+void imageMatching(Mat srcImg, Mat &dst,Mat templateImg)
+{
+	matchTemplate(srcImg, templateImg,dst ,TM_SQDIFF_NORMED);
+}
 // morphology : dilatation : /!\
 					//	    /___\
  
 int main()
 {
 	
-	Mat srcImg = imread("images/tiger.jpg");
-	Mat gray; 
-	cvtColor(srcImg, srcImg, cv::COLOR_RGB2GRAY);
-	Mat outputImg,outputImg1;
-	//Mat outputImg0, outputImg1, outputImg2 ;
-	Mat kernel;
-	int kernelSize = 7;
+	Mat srcImg = imread("images/bus.jpg");
+	Mat templateImg = imread("images/bus_template.png");
+
+	Mat dst;
 
 	
-	imageThresholding(srcImg, outputImg, 100, 255);
+	
+
+
+	Mat outputImg;
+	//Mat outputImg0, outputImg1, outputImg2 
 
 	if (srcImg.data == NULL)
 	{
 		cout << "error when loading file"; 
 		return -1;
 	}
+	Point min, max;
+	imageMatching(srcImg,dst, templateImg);
+	minMaxLoc(dst,NULL, NULL,&min,NULL);
+	Point point(min.x + templateImg.cols, min.y + templateImg.rows);
 
-	imshow("originalImage", outputImg);
+
+
+	Scalar color = Scalar(255, 0, 0, 255);
+	rectangle(srcImg,min, point, color, 2, LINE_8, 0);
+	imshow("result", srcImg);
 
 	waitKey(-1);
 	return 0;
