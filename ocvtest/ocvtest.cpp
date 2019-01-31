@@ -78,39 +78,42 @@ void imageMatching(Mat srcImg, Mat &dst,Mat templateImg)
 {
 	matchTemplate(srcImg, templateImg,dst ,TM_SQDIFF_NORMED);
 }
+
+void cannyEdgeDetection(Mat srcImg, Mat &outputImg,Mat dest ,int minThreshold, int maxThreshold, void*)
+{
+	
+	Canny(srcImg, outputImg, minThreshold, maxThreshold);
+
+
+}
 // morphology : dilatation : /!\
 					//	    /___\
  
 int main()
 {
 	
-	Mat srcImg = imread("images/bus.jpg");
-	Mat templateImg = imread("images/bus_template.png");
-
-	Mat dst;
-
-	
-	
-
+	Mat srcImg = imread("images/porsche.jpg");
+	Mat gray;
+	cvtColor(srcImg, gray, COLOR_RGB2GRAY);
+	int   minThreshold ;
+	int * maxThreshold;
+	//createTrackbar("Min Threshold:", " trackbar", &minThreshold,100, cannyEdgeDetection); !!
+ 	Mat dst;
 
 	Mat outputImg;
-	//Mat outputImg0, outputImg1, outputImg2 
+	 
 
 	if (srcImg.data == NULL)
 	{
 		cout << "error when loading file"; 
 		return -1;
 	}
-	Point min, max;
-	imageMatching(srcImg,dst, templateImg);
-	minMaxLoc(dst,NULL, NULL,&min,NULL);
-	Point point(min.x + templateImg.cols, min.y + templateImg.rows);
 
+	cannyEdgeDetection(gray, outputImg, dst, 100, 200,NULL);
+	
 
+	imshow("result", outputImg);
 
-	Scalar color = Scalar(255, 0, 0, 255);
-	rectangle(srcImg,min, point, color, 2, LINE_8, 0);
-	imshow("result", srcImg);
 
 	waitKey(-1);
 	return 0;
