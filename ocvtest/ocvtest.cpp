@@ -86,33 +86,67 @@ void cannyEdgeDetection(Mat srcImg, Mat &outputImg,Mat dest ,int minThreshold, i
 
 
 }
+
+void hull()
+{
+	int imageRows = 500;
+	int imageColumns = 500;
+
+	int minY = imageRows * 0.25;
+	int maxY = imageRows * 0.75;
+
+	int minX = imageColumns * 0.25;
+	int maxX = imageColumns * 0.75;
+
+
+	vector < Point > points;
+	Mat srcImg = imread("images/porsche.jpg");
+	Mat img = Mat::zeros(imageRows, imageColumns, CV_32F);
+	for (int i = 0; i < 1000; i++)
+	{
+
+
+		int rngX = rand() % (maxX - minX + 1) + minX;
+		int rngY = rand() % (maxY - minY + 1) + minY;
+		Point point(rngX, rngY);
+		points.push_back(point);
+		circle(img, point, 1, Scalar(255.0));
+
+
+
+	}
+
+	vector<vector< Point > > hull(points.size());
+
+	convexHull(points, hull);
+
+	if (hull.empty())
+	{
+		cout << "error when loading file";
+		
+	}
+	drawContours(img, hull, 1, Scalar(255.0, 255.0, 255.0, 255.0));
+
+	Mat outputImg;
+
+
+	/*if (srcImg.data == NULL)
+	{
+		cout << "error when loading file";
+		return -1;
+	}*/
+
+
+	rectangle(img, Point(minX, minY), Point(maxX, maxY), Scalar(255.0, 255.0, 255.0, 1.0));
+	imshow("result", img);
+
+}
 // morphology : dilatation : /!\
 					//	    /___\
  
 int main()
 {
 	
-	Mat srcImg = imread("images/porsche.jpg");
-	Mat gray;
-	cvtColor(srcImg, gray, COLOR_RGB2GRAY);
-	int   minThreshold ;
-	int * maxThreshold;
-	//createTrackbar("Min Threshold:", " trackbar", &minThreshold,100, cannyEdgeDetection); !!
- 	Mat dst;
-
-	Mat outputImg;
-	 
-
-	if (srcImg.data == NULL)
-	{
-		cout << "error when loading file"; 
-		return -1;
-	}
-
-	cannyEdgeDetection(gray, outputImg, dst, 100, 200,NULL);
-	
-
-	imshow("result", outputImg);
 
 
 	waitKey(-1);
