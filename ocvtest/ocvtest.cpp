@@ -3,152 +3,56 @@
 
 
 #include <opencv2/opencv.hpp>
+#include "colorSegmentation.h"
 #include <iostream>
 
 using namespace std;
 using namespace cv;
 
-#define GAUSSIAN_BLUR 0
-#define MEDIAN_BLUR 1
-#define BILATERAL_BLUR 2
-
-#define DILATING	3
-#define ERODING		4
-
-#define LAPLACIAN 5
-#define SCALING 6 
-#define CANNY 7 
-
-
-void imageSmoothing(Mat srcImg, Mat &outputImg, Size kernelSize, int type)
-{
-	switch (type)
-	{
-	case 0:
-		GaussianBlur(srcImg, outputImg, kernelSize, 0.0);
-		break;
-	case 1:
-		medianBlur(srcImg, outputImg, kernelSize.height);
-		break;
-	case 2:
-		bilateralFilter(srcImg, outputImg, 15, 30, 7.5);
-		break;
-
-	}
-}
-
-void mathematicalMorphology(Mat	srcImg, Mat &outputImg, int operationType, Mat structuringElement)
-{
-	switch (operationType)
-	{
-	case 3:
-		dilate(srcImg,outputImg,structuringElement);
-		break;
-	case 4:
-		erode(srcImg, outputImg, structuringElement);
-		break;
-	}
-
-}
-
-void imageThresholding(Mat srcImg, Mat &outputImg, int minThreshold, int maxThreshold)
-{
-	threshold(srcImg, outputImg, minThreshold, maxThreshold, 1);
-
-}
-
-void contoursDetection(Mat srcImg, Mat &outputImg,int operationType)
-{
-	switch (operationType)
-	{
-	case 5:
-		
-		break;
-	case 6:
-		
-		break;
-	case 7:
-
-		break;
-
-	}
-}
-
-void imageMatching(Mat srcImg, Mat &dst,Mat templateImg)
-{
-	matchTemplate(srcImg, templateImg,dst ,TM_SQDIFF_NORMED);
-}
-
-void cannyEdgeDetection(Mat srcImg, Mat &outputImg,Mat dest ,int minThreshold, int maxThreshold, void*)
-{
-	
-	Canny(srcImg, outputImg, minThreshold, maxThreshold);
-
-
-}
-
-void hull()
-{
-	int imageRows = 500;
-	int imageColumns = 500;
-
-	int minY = imageRows * 0.25;
-	int maxY = imageRows * 0.75;
-
-	int minX = imageColumns * 0.25;
-	int maxX = imageColumns * 0.75;
-
-
-	vector < Point > points;
-	Mat srcImg = imread("images/porsche.jpg");
-	Mat img = Mat::zeros(imageRows, imageColumns, CV_32F);
-	for (int i = 0; i < 1000; i++)
-	{
-
-
-		int rngX = rand() % (maxX - minX + 1) + minX;
-		int rngY = rand() % (maxY - minY + 1) + minY;
-		Point point(rngX, rngY);
-		points.push_back(point);
-		circle(img, point, 1, Scalar(255.0));
-
-
-
-	}
-
-	vector<vector< Point > > hull(points.size());
-
-	convexHull(points, hull);
-
-	if (hull.empty())
-	{
-		cout << "error when loading file";
-		
-	}
-	drawContours(img, hull, 1, Scalar(255.0, 255.0, 255.0, 255.0));
-
-	Mat outputImg;
-
-
-	/*if (srcImg.data == NULL)
-	{
-		cout << "error when loading file";
-		return -1;
-	}*/
-
-
-	rectangle(img, Point(minX, minY), Point(maxX, maxY), Scalar(255.0, 255.0, 255.0, 1.0));
-	imshow("result", img);
-
-}
 // morphology : dilatation : /!\
 					//	    /___\
  
 int main()
 {
-	
+	VideoCapture cap("vid1.MOV");
 
+	if (!cap.isOpened()) {
+		cout << "Error opening video stream or file" << endl;
+		return -1;
+	}
 
+	Scalar color;
+	while (1) {
+
+		Mat frame,hsvFrame;
+		cap >> frame;
+
+		resize(frame, frame, Size(340, 480), 0.0, 0.0, INTER_LINEAR);
+		cvtColor(frame, hsvFrame, COLOR_BGR2HSV);
+
+		int minThreshold, maxThreshold;
+		minThreshold = 100;
+		maxThreshold = 200;
+
+		//red : 353 -> 6
+		if (frame.empty())
+		{
+			return -1;
+		}
+			
+		imshow("thresholded Frame(1)", colorThresholding(hsvFrame));
+		imshow("closed frame(2)", closingContours(hsvFrame));
+		imshow("canny edge detection(3)", cannyEdgeDetection(hsvFrame, minThreshold, maxThreshold));
+		imshow("dilated frame(4)", dilateImg(hsvFrame));
+		Mat dilated = hsvFrame.clone();
+		imshow("contours(5)", findAndTraceContours(hsvFrame));
+		imshow("filtered areas(6)", thresholdingBySurface(dilated));
+		imshow("original frame", frame);
+
+		char c = (char)waitKey(25);
+		if (c == 27)
+			break;
+	}
 	waitKey(-1);
 	return 0;
 }
